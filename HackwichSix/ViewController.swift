@@ -13,20 +13,30 @@ class ViewController: UIViewController {
     @IBOutlet var slider: UISlider!
     var currentValue: Int = 0
     
+    var targetValue: Int = 0
     
     @IBAction func sliderHasMoved(_ sender: Any) {
         print("The value of the slider is:\(slider.value)")
         currentValue = lroundf(slider.value)
+    
     }
-    
-    
-    
+    @IBOutlet var targetLabel: UILabel!
+   
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+    currentValue = lroundf(slider.value)
+    startNewRound()
+        let thumbImageNormal = UIImage(named: "SliderThumb-Normal")
+        slider.setThumbImage(thumbImageNormal, for: .normal)
+    
     }
-
+    func updateTargetLabel(){
+    targetLabel.text = String(targetValue)
+        
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -34,7 +44,7 @@ class ViewController: UIViewController {
 
     @IBAction func myGuessButtonPressed(_ sender: Any) {
         
-        let message = "The value is: \(currentValue)"
+        let message = "The value is: \(currentValue)" + "\nThe target value is: \(targetValue)"
         
         let alert = UIAlertController(title:"Hello World", message: message, preferredStyle: .alert)
         
@@ -48,12 +58,18 @@ class ViewController: UIViewController {
         
 //4.
         present(alert, animated: true, completion:nil)
-
-//5.
-        
-        
-    
+              startNewRound()
     }
+//5.
+        func startNewRound() {
+            
+            targetValue = 1 + Int(arc4random_uniform(100))
+            currentValue = 50
+            slider.value = Float(currentValue)
+            updateTargetLabel()
+
+    }
+
     
     
 }
